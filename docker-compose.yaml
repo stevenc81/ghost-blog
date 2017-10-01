@@ -1,0 +1,21 @@
+nginx:
+  container_name: nginx
+  build: ./nginx
+  volumes:
+    - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+    - ~/ssl/certs/:/etc/nginx/certs/:ro
+  ports:
+    - "443:443"
+  links:
+    - ghost
+  restart: always
+ghost:
+  container_name: ghost
+  volumes:
+    - ~/ghost-db/:/var/lib/ghost/content/
+  build: ./ghost
+  expose:
+    - "2368"
+  environment:
+    - url=https://steven.news
+  restart: always
